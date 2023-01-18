@@ -18,7 +18,9 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     clearCart: (state) => {
-      state.cartItems = [];
+      // state.cartItems = [];
+      // we still can return a state, BUT don't forget to spread the old state first!
+      return { ...state, cartItems: [] };
     },
   },
 });
