@@ -32,10 +32,15 @@ const cartSlice = createSlice({
       );
       cartItem.amount += 1;
     },
+    decreaseAmount: (state, { payload }) => {
+      const cartItem = state.cartItems.find((item) => item.id === payload);
+      cartItem.amount -= 1;
+    },
   },
 });
 
 // console.log(cartSlice);
 
-export const { clearCart, removeItem, increaseAmount } = cartSlice.actions;
+export const { clearCart, removeItem, increaseAmount, decreaseAmount } =
+  cartSlice.actions;
 export default cartSlice.reducer;
