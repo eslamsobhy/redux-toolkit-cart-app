@@ -7,12 +7,12 @@ import {
   decreaseAmount,
 } from "../features/cart/cartSlice";
 
-const CartItem = ({ image, id, price, amount, title }) => {
+const CartItem = ({ img, id, price, amount, title }) => {
   const dispatch = useDispatch();
 
   return (
     <article className="cart-item">
-      <img src={image} alt={title} />
+      <img src={img} alt={title} />
       <div>
         <h4>{title}</h4>
         <h4 className="item-price">${price}</h4>
