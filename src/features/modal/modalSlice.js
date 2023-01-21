@@ -12,7 +12,7 @@ const modalSlice = createSlice({
       state.isOpen = true;
     },
     closeModal: (state, action) => {
-      state.isOpen = flase;
+      state.isOpen = false;
     },
   },
 });
