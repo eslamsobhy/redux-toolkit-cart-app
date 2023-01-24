@@ -44,6 +44,7 @@
 ## About The Project
 
 <div align="center"><img src="public/images/screenshot.jpg" alt="screenshot" width="80%" height=auto></div>
+<br/>
 
 Shopping Cart app is a single page application that is responsible for displaying all of your shopping
 cart items with the ability to:
@@ -60,7 +61,7 @@ I've built the same application with almost the same functionalities BUT used di
 
 You can check it out from here: <a href="https://github.com/eslamsobhy/cart-app">Shopping cart app</a>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p><hr/>
 
 ### ⚡ Technologies
 
@@ -69,4 +70,87 @@ You can check it out from here: <a href="https://github.com/eslamsobhy/cart-app"
 - [![JavaScript](https://img.shields.io/badge/--F7DF1E?logo=javascript&logoColor=000)](https://www.javascript.com/)
 - ![React](https://img.shields.io/badge/-React-black?style=flat-square&logo=react)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">back to top</a>)</p><hr/>
+
+<!-- GETTING STARTED -->
+
+## Getting Started
+
+Here I'll guide you through all of the steps followed during implementing this app:
+
+### Installation
+
+- Install The Project with redux from the beginning:
+
+```sh
+npx create-react-app shopping-cart-app --template redux
+```
+
+- @latest
+
+```sh
+npx create-react-app@latest shopping-cart-app --template redux
+```
+
+#### OR:
+
+- Install Redux to an existing project:
+
+```sh
+npm install @reduxjs/toolkit react-redux
+```
+
+#### @reduxjs/toolkit
+
+consists of few libraries
+
+- redux (core library, state management)
+- immer (allows to mutate state)
+- redux-thunk (handles async actions)
+- reselect (simplifies reducer functions)
+
+#### Extras
+
+- redux devtools
+- combine reducers
+
+### Steps
+
+1. Connecting our app to redux:
+
+#### Setup Store:
+
+```js
+import { configureStore } from "@reduxjs/toolkit";
+
+export const store = configureStore({
+  reducer: {},
+});
+```
+
+#### Setup Provider:
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+// import store and provider
+import { store } from "./store";
+import { Provider } from "react-redux";
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+```
+
+- <p align="center">(<a href="https://github.com/eslamsobhy/redux-toolkit-cart-app/commit/00105435f59d449bc7220396d033d5d2458c6f9e" target="_blank">visit source code</a>)</p><hr/>
+
+2. Setup the Cart Slice:
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p><hr/>
