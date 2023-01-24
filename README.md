@@ -20,22 +20,16 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#Technologies">Built With</a></li>
       </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -421,5 +415,209 @@ export default App;
 
 - <p align="left">(<a href="https://github.com/eslamsobhy/redux-toolkit-cart-app/commit/e9667ce6ed873c48520b25da0fcf13630c822b07" target="_blank">visit source code</a>)</p><hr/>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p><hr/>
+6. Creating The Modal Slice (Feature):
+
+#### Create the slice:
+
+```js
+import { createSlice } from "@reduxjs/toolkit";
+const initialState = {
+  isOpen: false,
+};
+
+const modalSlice = createSlice({
+  name: "modal",
+  initialState,
+  reducers: {
+    openModal: (state, action) => {
+      state.isOpen = true;
+    },
+    closeModal: (state, action) => {
+      state.isOpen = false;
+    },
+  },
+});
+
+export const { openModal, closeModal } = modalSlice.actions;
+export default modalSlice.reducer;
 ```
+
+#### Link it to the store:
+
+```js
+import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "./features/cart/cartSlice";
+import modalReducer from "./features/modal/modalSlice";
+
+export const store = configureStore({
+  reducer: {
+    cart: cartReducer,
+    modal: modalReducer,
+  },
+});
+```
+
+#### Access the modal data:
+
+```js
+const { isOpen } = useSelector((state) => state.modal);
+
+return (
+  <main>
+    {isOpen && <Modal />}
+    <Navbar />
+    <CartContainer />
+  </main>
+);
+```
+
+- <p align="left">(<a href="https://github.com/eslamsobhy/redux-toolkit-cart-app/commit/23cfd43535988be49067eac5f1b813ee9c75d5cc" target="_blank">visit source code</a>)</p><hr/>
+
+7. Implementing Functionalities (Reducers):
+
+#### Toggling the modal
+
+- When to open the modal?
+
+```js
+import { openModal } from "../features/modal/modalSlice";
+
+return (
+  <button
+    className="btn clear-btn"
+    onClick={() => {
+      dispatch(openModal());
+    }}
+  >
+    clear cart
+  </button>
+);
+```
+
+- If opened, what is next?
+
+```js
+import { closeModal } from "../features/modal/modalSlice";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../features/cart/cartSlice";
+
+const Modal = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <aside className="modal-container">
+      <div className="modal">
+        <h4>Remove all items from your shopping cart?</h4>
+        <div className="btn-container">
+          <button
+            type="button"
+            className="btn confirm-btn"
+            onClick={() => {
+              dispatch(clearCart());
+              dispatch(closeModal());
+            }}
+          >
+            confirm
+          </button>
+          <button
+            type="button"
+            className="btn clear-btn"
+            onClick={() => {
+              dispatch(closeModal());
+            }}
+          >
+            cancel
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+};
+export default Modal;
+```
+
+- <p align="left">(<a href="https://github.com/eslamsobhy/redux-toolkit-cart-app/commit/3011d377c7b7ecfe7808a4da2f102e723ffad083" target="_blank">visit source code</a>)</p><hr/>
+
+8. Async Functionality With createAsyncThunk (Fetching Data):
+
+#### Create Async Thunk:
+
+- action type
+- callback function
+- lifecycle actions
+
+```js
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+const url = "https://course-api.com/react-useReducer-cart-project";
+
+export const getCartItems = createAsyncThunk("cart/getCartItems", () => {
+  return fetch(url)
+    .then((resp) => resp.json())
+    .catch((err) => console.log(error));
+});
+
+const cartSlice = createSlice({
+  name: "cart",
+  initialState,
+  extraReducers: {
+    [getCartItems.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getCartItems.fulfilled]: (state, action) => {
+      console.log(action);
+      state.isLoading = false;
+      state.cartItems = action.payload;
+    },
+    [getCartItems.rejected]: (state) => {
+      state.isLoading = false;
+    },
+  },
+});
+```
+
+#### Using It:
+
+```js
+import { calculateTotals, getCartItems } from "./features/cart/cartSlice";
+
+function App() {
+  const { cartItems, isLoading } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    dispatch(getCartItems());
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="loading">
+        <h1>Loading...</h1>
+      </div>
+    );
+  }
+
+  return (
+    <main>
+      {isOpen && <Modal />}
+      <Navbar />
+      <CartContainer />
+    </main>
+  );
+}
+
+export default App;
+```
+
+- <p align="left">(<a href="https://github.com/eslamsobhy/redux-toolkit-cart-app/commit/1c1d941ddc62e7d666017a2255ffaafa32a73752" target="_blank">visit source code</a>)</p><hr/>
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p><hr/>
+
+<!-- CONTACT -->
+
+## Contact
+
+Eslam Sobhii - eslamsobhy206@gmail.com
+
+Project Link: [https://github.com/eslamsobhy/redux-toolkit-cart-app]
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
